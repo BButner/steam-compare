@@ -1,31 +1,27 @@
-import { A } from "solid-start";
-import Counter from "~/components/Counter";
+import { createSignal } from "solid-js";
+import { SteamCompareClient } from "~/lib/api/steamCompareClient";
 
 export default function Home() {
+  const api = new SteamCompareClient();
+
+  const [steamId, setSteamId] = createSignal("");
+
+  const test = async () => {
+    const result = await api.getPlayerBySteamId(steamId());
+    console.log(result);
+  };
+
   return (
-    <main class="text-center mx-auto text-gray-700 p-4">
-      <h1 class="max-6-xs text-6xl text-sky-700 font-thin uppercase my-16">
-        Hello world!
-      </h1>
-      <Counter />
-      <p class="mt-8">
-        Visit{" "}
-        <a
-          href="https://solidjs.com"
-          target="_blank"
-          class="text-sky-600 hover:underline"
-        >
-          solidjs.com
-        </a>{" "}
-        to learn how to build Solid apps.
-      </p>
-      <p class="my-4">
-        <span>Home</span>
-        {" - "}
-        <A href="/about" class="text-sky-600 hover:underline">
-          About Page
-        </A>{" "}
-      </p>
+    <main class="">
+      {"Test Environment Variable: " + import.meta.env.VITE_TEST}
+      <br />
+
+      <input
+        type="text"
+        value={steamId()}
+        onInput={(e) => setSteamId(e.currentTarget.value)}
+      />
+      <button onClick={test}>Test Retrieval</button>
     </main>
   );
 }
